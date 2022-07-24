@@ -1,0 +1,25 @@
+from enum import Enum
+
+
+class ResourceType(Enum):
+    DEVICE = "device"
+    LIGHT = "light"
+    ZIGBEE_CONNECTIVITY = "zigbee_connectivity"
+    ROOM = "room"
+    BRIDGE = "bridge"
+    BUTTON = "button"
+    DEVICE_POWER = "device_power"
+    BRIDGE_HOME = "bridge_home"
+    ENTERTAINMENT_CONFIGURATION = "entertainment_configuration"
+    BEHAVIOR_INSTANCE = "behavior_instance"
+    BEHAVIOR_SCRIPT = "behavior_script"
+    GEOFENCE_CLIENT = "geofence_client"
+    GEOLOCATION = "geolocation"
+    GROUPED_LIGHT = "grouped_light"
+    MOTION = "motion"
+    TEMPERATURE = "temperature"
+    SCENE = "scene"
+    ENTERTAINMENT = "entertainment"
+    HOMEKIT = "homekit"
+    LIGHT_LEVEL = "light_level"
+    RECIPE = "recipe"
