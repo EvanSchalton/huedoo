@@ -1,7 +1,6 @@
-from pydantic import BaseModel
+from pydantic import BaseModel  # type:ignore
+
 
 class ResourceColorGamut(BaseModel):
     x: float
     y: float
-
-

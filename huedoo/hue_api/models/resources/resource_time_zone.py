@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel  # type:ignore
 from .time_zone import TimeZone
 
 

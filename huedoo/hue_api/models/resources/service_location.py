@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel #type:ignore
 from .resource_service import ResourceService
 from .location import Location
 

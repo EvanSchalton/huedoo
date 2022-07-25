@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel  # type:ignore
 from .alert_action_value import AlertActionValue
 
 

@@ -1,5 +1,5 @@
 from uuid import UUID
-from pydantic import BaseModel
+from pydantic import BaseModel  # type:ignore
 from .resource_type import ResourceType
 
 

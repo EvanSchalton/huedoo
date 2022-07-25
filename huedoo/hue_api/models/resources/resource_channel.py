@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel  # type:ignore
 from .location import Location
 from .channel_member import ChannelMember
 

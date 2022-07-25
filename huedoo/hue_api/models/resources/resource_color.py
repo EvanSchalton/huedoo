@@ -1,5 +1,5 @@
 from typing import Optional
-from pydantic import BaseModel
+from pydantic import BaseModel  # type:ignore
 from .gamut_color import GamutColor
 from .resource_color_gamut import ResourceColorGamut
 from .gamut_type import GamutType

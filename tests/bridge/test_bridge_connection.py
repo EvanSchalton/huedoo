@@ -91,13 +91,13 @@ def test_bridge_can_register_app(test_bridge, mocker):
     """
     MOCK_TOKEN = "MOCK_TOKEN"
     mocker.patch(
-        'huedoo.hue_api.hue_api.HueAPI.register_app',
+        'huedoo.hue_api.hue_api.HueAPI._get_app_token',
         return_value=MOCK_TOKEN
     )
     test_bridge.register(TEST_APP_NAME)
 
-    print(test_bridge.config_handler.data)
-    print(test_bridge.config_handler.data.dict())
+    # print(test_bridge.config_handler.data)
+    # print(test_bridge.config_handler.data.dict())
 
     assert test_bridge.config_handler.data.app_name == TEST_APP_NAME
     assert test_bridge.config_handler.data.app_token == MOCK_TOKEN

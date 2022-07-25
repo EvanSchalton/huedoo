@@ -8,7 +8,6 @@ from ipaddress import IPv4Address, IPv6Address
 
 class CustomEncoder(json.JSONEncoder):
     def default(self, o):
-        print("o:", o, str(o))
         if isinstance(o, (IPv4Address, IPv6Address)):
             return str(o)
         return json.JSONEncoder.default(self, o)
@@ -35,7 +34,7 @@ class ConfigHandlerJson(ConfigHandlerABC):
         if os.path.exists(filepath):
             with open(filepath, encoding="utf-8") as in_config:
                 config_json = json.load(in_config)
-                print("config_json:", config_json)
+                # print("config_json:", config_json)
                 self.data = ConfigModel(**config_json)
             return
         self.data = ConfigModel()
@@ -54,7 +53,7 @@ class ConfigHandlerJson(ConfigHandlerABC):
             "w+",
             encoding="utf-8"
         ) as out_config:
-            print("config_data:", config_data)
+            # print("config_data:", config_data)
             out_config.write(json.dumps(
                 config_data, indent=2, cls=CustomEncoder))
 
