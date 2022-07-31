@@ -62,7 +62,7 @@ def test_bridge(test_config, mocker) -> Bridge:
 def test_dimmable(test_bridge):
     resource = test_bridge.api.get_device(
         resource_type=ResourceType.LIGHT,
-        id=LIGHT_UUID
+        uuid=LIGHT_UUID
     )
     dimmable = Dimmable(
         resource=resource,
@@ -71,6 +71,7 @@ def test_dimmable(test_bridge):
     return dimmable
 
 
+@pytest.mark.trigger_lights
 def test_dimmable_can_turn_light_on_and_off(test_dimmable):
     starting_position: bool = test_dimmable.is_on
     starting_brightness: float = test_dimmable.brightness

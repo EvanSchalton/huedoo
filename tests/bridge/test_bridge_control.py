@@ -58,6 +58,7 @@ def test_bridge(test_config, mocker) -> Bridge:
 
 def test_bridge_can_return_lights(test_bridge):
     lights = test_bridge.lights
+    print(lights)
     assert isinstance(lights, list)
     assert len(lights) > 0
     for i in lights:
@@ -67,17 +68,28 @@ def test_bridge_can_return_lights(test_bridge):
 def test_bridge_can_retrieve_a_device_by_id(test_bridge):
     light = test_bridge.get_device(
         resource_type=ResourceType.LIGHT,
-        id=LIGHT_UUID
+        uuid=LIGHT_UUID
     )
 
     assert isinstance(light, Light)
     assert light.resource.type == ResourceType.LIGHT
 
 
+def test_bridge_can_retrieve_a_device_by_id_str(test_bridge):
+    light = test_bridge.get_device(
+        resource_type=ResourceType.LIGHT,
+        uuid=str(LIGHT_UUID)
+    )
+
+    assert isinstance(light, Light)
+    assert light.resource.type == ResourceType.LIGHT
+
+
+@pytest.mark.trigger_lights
 def test_bridge_can_set_device(test_bridge):
     test_light = test_bridge.get_device(
         resource_type=ResourceType.LIGHT,
-        id=LIGHT_UUID
+        uuid=LIGHT_UUID
     )
     starting_position = test_light.is_on
 
@@ -85,7 +97,7 @@ def test_bridge_can_set_device(test_bridge):
     # toggle the light
     test_bridge.set_device(
         resource_type=ResourceType.LIGHT,
-        id=LIGHT_UUID,
+        uuid=LIGHT_UUID,
         device_settings=[
             DeviceSetting.TURN_OFF if starting_position else DeviceSetting.TURN_ON
         ]
@@ -101,7 +113,7 @@ def test_bridge_can_set_device(test_bridge):
     # toggle the light back
     test_bridge.set_device(
         resource_type=ResourceType.LIGHT,
-        id=LIGHT_UUID,
+        uuid=str(LIGHT_UUID),  # should allow str|UUID
         device_settings=[
             DeviceSetting.TURN_ON if starting_position else DeviceSetting.TURN_OFF
 

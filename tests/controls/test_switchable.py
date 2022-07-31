@@ -62,7 +62,7 @@ def test_bridge(test_config, mocker) -> Bridge:
 def test_switchable(test_bridge):
     resource = test_bridge.api.get_device(
         resource_type=ResourceType.LIGHT,
-        id=LIGHT_UUID
+        uuid=LIGHT_UUID
     )
     switchable = Switchable(
         resource=resource,
@@ -71,6 +71,7 @@ def test_switchable(test_bridge):
     return switchable
 
 
+@pytest.mark.trigger_lights
 def test_switchable_can_turn_light_on_and_off(test_switchable):
     starting_position: bool = test_switchable.is_on
 
@@ -93,12 +94,14 @@ def test_switchable_can_turn_light_on_and_off(test_switchable):
     assert test_switchable.is_on == starting_position
 
 
+@pytest.mark.trigger_lights
 def test_switchable_can_turn_off_light(test_switchable):
     test_switchable.turn_off()
     default_sleep()
     assert not test_switchable.is_on
 
 
+@pytest.mark.trigger_lights
 def test_switchable_can_toggle_lights(test_switchable):
     starting_position = test_switchable.is_on
 

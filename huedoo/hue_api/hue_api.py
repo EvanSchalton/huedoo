@@ -89,12 +89,16 @@ class HueAPI:
 
         return f"https://{self.bridge_ip}"
 
-    def register_app(self, app_name: str = "python-hue"):
+    def register_app(self, app_name: str = "python-hue", app_token: Optional[str] = None):
         if self.session is None:
             self.setup_session()
-        token = self._get_app_token(app_name)
-        self.session.headers['hue-application-key'] = token
-        return token
+
+        if app_token is None:
+            app_token = self._get_app_token(app_name)
+
+        self.session.headers['hue-application-key'] = app_token
+
+        return app_token
 
     def _get_app_token(self, app_name: str = "python-hue") -> str:
         """
@@ -104,10 +108,13 @@ class HueAPI:
             self.setup_session()
         # print("self.session", self.session)
 
-        response = self.request(
-            HueRoute.REGISTRATION,
-            data={"devicetype": app_name},
-        )
+        try:
+            response = self.request(
+                HueRoute.REGISTRATION,
+                data={"devicetype": app_name},
+            )
+        except Exception as e:
+            raise Exception("Unable to register with bridge") from e
 
         if response.status_code == HTTPStatus.OK:
             response_json = response.json()
@@ -147,7 +154,7 @@ class HueAPI:
                 continue
         raise Exception(f"Cannot find device '{name}'")
 
-    def _resolve_id(
+    def _resolve_uuid(
         self,
         resource_type: ResourceType,
         id: Optional[UUID | str] = None,
@@ -170,13 +177,13 @@ class HueAPI:
     def get_device(
         self,
         resource_type: ResourceType,
-        id: Optional[UUID | str] = None,
+        uuid: Optional[UUID | str] = None,
         name: Optional[str] = None
     ) -> Resource:
         """
         Lookup a device by it's id OR name
         """
-        id = self._resolve_id(resource_type, id, name)
+        uuid = self._resolve_uuid(resource_type, uuid, name)
 
         route = HueRoute.GET_DEVICE.value
         if resource_type == ResourceType.LIGHT:
@@ -184,13 +191,13 @@ class HueAPI:
 
         if route.parameters is None:
             route.parameters = {}
-        route.parameters['id'] = id
+        route.parameters['id'] = uuid
 
         response = self.request(route)
         # print(response.request.path_url)
         # print(response.request.headers)
         if response.status_code == HTTPStatus.NOT_FOUND:
-            raise Exception(f"Cannot find device '{name}' [{id}]")
+            raise Exception(f"Cannot find device '{name}' [{uuid}]")
 
         device_json = response.json()['data'][0]
         # print(device_json)
@@ -202,10 +209,10 @@ class HueAPI:
         self,
         resource_type: ResourceType,
         params: dict[str, Any],
-        id: Optional[UUID | str] = None,
+        uuid: Optional[UUID | str] = None,
         name: Optional[str] = None
     ):
-        id = self._resolve_id(resource_type, id, name)
+        uuid = self._resolve_uuid(resource_type, uuid, name)
 
         route = HueRoute.PUT_DEVICE.value
         if resource_type == ResourceType.LIGHT:
@@ -213,13 +220,13 @@ class HueAPI:
 
         if route.parameters is None:
             route.parameters = {}
-        route.parameters['id'] = id
+        route.parameters['id'] = uuid
 
         response = self.request(route, data=params)
 
         print("response:", response)
 
         if response.status_code == HTTPStatus.NOT_FOUND:
-            raise Exception(f"Cannot find device '{name}' [{id}]")
+            raise Exception(f"Cannot find device '{name}' [{uuid}]")
 
         return response

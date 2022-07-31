@@ -1,4 +1,4 @@
-from enum import Enum
+from ...utilities import Enum
 from .device_setting_functions import *
 
 

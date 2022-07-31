@@ -11,3 +11,6 @@ class ResourceProductData(BaseModel):
     product_archetype: str
     product_name: ProductName
     software_version: str
+
+    class Config:
+        use_enum_values = False

@@ -28,9 +28,7 @@ class Dimmable(Switchable):
             return
         else:
             # sets brightness but doesn't change the light on/off
-            self.bridge.set_device(
-                resource_type=self.resource.type,
-                id=self.resource.id,
+            self.set(
                 device_settings=[
                     DeviceSetting.BRIGHTNESS(brightness)
                 ],

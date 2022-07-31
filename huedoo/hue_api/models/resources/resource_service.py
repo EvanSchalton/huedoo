@@ -6,3 +6,6 @@ from .resource_type import ResourceType
 class ResourceService(BaseModel):
     rid: UUID
     rtype: ResourceType
+
+    class Config:
+        use_enum_values = False

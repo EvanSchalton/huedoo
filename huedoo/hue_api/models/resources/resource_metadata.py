@@ -7,3 +7,6 @@ class ResourceMetadata(BaseModel):
     name: Optional[str] = None
     control_id: Optional[int] = None
     category: Optional[str] = None  # TODO: Enum
+
+    class Config:
+        use_enum_values = False

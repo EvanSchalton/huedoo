@@ -28,6 +28,7 @@ from .resource_segments import ResourceSegments
 
 
 class Resource(BaseModel):
+
     alert: Optional[ResourceAlert] = None
     color: Optional[ResourceColor]
     color_temperature: Optional[ResourceColorTemperature] = None
@@ -83,3 +84,6 @@ class Resource(BaseModel):
     services: Optional[list[ResourceService]] = None
     status: Optional[str] = None  # TODO: make enum
     type: ResourceType
+
+    class Config:
+        use_enum_values = False

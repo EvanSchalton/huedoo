@@ -6,3 +6,6 @@ class ResourceConfigurationDepends(BaseModel):
     level: str  # TODO: Enum
     target: ResourceService
     type: str
+
+    class Config:
+        use_enum_values = False

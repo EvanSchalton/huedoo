@@ -7,3 +7,6 @@ class ResourceChannel(BaseModel):
     channel_id: int
     position: Location
     members: list[ChannelMember]
+
+    class Config:
+        use_enum_values = False

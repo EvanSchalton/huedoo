@@ -105,10 +105,10 @@ class Bridge:
         from huedoo.controls.light import Light
 
         if isinstance(id, str):
-            uuid = UUID(uuid)
+            uuid = UUID(id)
         resource = self.api.get_device(
             resource_type=resource_type,
-            uuid=uuid,
+            uuid=id,
             name=name
         )
 
@@ -127,7 +127,7 @@ class Bridge:
         **kwargs
     ) -> Resource:
         # TODO: Should return an actual object
-        if isinstance(uuid, str):
+        if isinstance(id, str):
             uuid = UUID(uuid)
 
         params: dict[str, Any] = kwargs
@@ -142,7 +142,7 @@ class Bridge:
 
                 params.update(**device_setting)
 
-        # print("params:", params)
+        print("params:", params)
         return self.api.set_device(
             resource_type=resource_type,
             uuid=uuid,

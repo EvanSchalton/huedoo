@@ -6,3 +6,6 @@ class ResourceSegments(BaseModel):
     configurable: bool
     max_segments: int
     segments: list[ResourceSegmentItem]
+
+    class Config:
+        use_enum_values = False

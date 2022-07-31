@@ -16,6 +16,9 @@ class Route(BaseModel):
     parameters: Optional[dict[str, Any]] = None
 
     class Config:
+        use_enum_values = False
+
+    class Config:
         arbitrary_types_allowed = True
         allow_reuse = True
 

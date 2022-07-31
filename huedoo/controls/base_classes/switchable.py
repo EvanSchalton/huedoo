@@ -1,29 +1,37 @@
 from typing import Optional
 from huedoo import Bridge
 from huedoo.hue_api.routes.device_settings import DeviceSetting
-from ...hue_api.models import Resource
+from ...hue_api.models import Resource, ResourceType
+from .device import Device
+from uuid import UUID
 
 
-class Switchable:
+class Switchable(Device):
     """
     Turn something on and off
     """
 
     def __init__(
         self,
-        resource: Resource,
-        bridge: Bridge
+        bridge: Bridge,
+        resource: Optional[Resource] = None,
+        uuid: Optional[UUID] = None,
+        name: Optional[str] = None,
+        resource_type: Optional[ResourceType] = None
     ):
-        self.resource = resource
-        self.bridge = bridge
+        super().__init__(
+            bridge=bridge,
+            resource=resource,
+            uuid=uuid,
+            name=name,
+            resource_type=resource_type
+        )
 
     def turn_on(self, *args: list[DeviceSetting], **kwargs):
         """
         Turn on switchable
         """
-        self.bridge.set_device(
-            resource_type=self.resource.type,
-            id=self.resource.id,
+        self.set(
             device_settings=[
                 DeviceSetting.TURN_ON,
                 *args
@@ -36,9 +44,7 @@ class Switchable:
         """
         Turn off switchable
         """
-        self.bridge.set_device(
-            resource_type=self.resource.type,
-            id=self.resource.id,
+        self.set(
             device_settings=[
                 DeviceSetting.TURN_OFF,
                 *args
@@ -55,20 +61,6 @@ class Switchable:
             self.turn_off(**kwargs)
             return
         self.turn_on(**kwargs)
-
-    def refresh(self, updated_resource: Optional[Resource] = None):
-        """
-        Refresh the latest status of the switchable
-        """
-        print("refreshing")
-        if updated_resource:
-            self.resource = updated_resource
-            return
-
-        self.resource = self.bridge.api.get_device(
-            resource_type=self.resource.type,
-            id=self.resource.id
-        )
 
     @property
     def is_on(self) -> bool:

@@ -9,3 +9,6 @@ class ResourceColor(BaseModel):
     gamut: Optional[dict[GamutColor, ResourceColorGamut]] = None
     gamut_type: Optional[GamutType] = None
     xy: Optional[ResourceColorGamut] = None
+
+    class Config:
+        use_enum_values = False

@@ -12,3 +12,6 @@ class ResourceConfiguration(BaseModel):
     what: Optional[list[ResourceConfigurationWhat]] = None
     where: list[ResourceConfigurationWhere]
     when_constrained: Optional[ResourceConfigurationWhenConstrained] = None
+
+    class Config:
+        use_enum_values = False

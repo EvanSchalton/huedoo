@@ -1,6 +1,5 @@
-from enum import Enum
+from ....utilities import Enum
+
 
 class GamutType(Enum):
     C = "C"
-
-

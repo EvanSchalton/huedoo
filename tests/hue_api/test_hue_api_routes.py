@@ -38,7 +38,7 @@ def test_bridge_can_list_all_resources(test_api):
 
 def test_bridge_can_lookup_resource_by_id(test_api):
     result = test_api.get_device(
-        resource_type=ResourceType.LIGHT, id=LIGHT_UUID)
+        resource_type=ResourceType.LIGHT, uuid=LIGHT_UUID)
     assert result.id == LIGHT_UUID
     assert result.metadata.name == LIGHT_NAME
 
@@ -60,7 +60,7 @@ def test_bridge_raises_exception_on_unknown_device(test_api):
 
     with pytest.raises(Exception):
         # TODO: Custom Error
-        test_api.get_device(resource_type=ResourceType.LIGHT, id=uuid4())
+        test_api.get_device(resource_type=ResourceType.LIGHT, uuid=uuid4())
 
 
 def test_bridge_requires_name_or_id(test_api):
@@ -74,15 +74,16 @@ def test_bridge_requires_name_or_id_not_both(test_api):
         # TODO: Custom Error
         test_api.get_device(
             resource_type=ResourceType.LIGHT,
-            id=LIGHT_UUID,
+            uuid=LIGHT_UUID,
             name=LIGHT_NAME
         )
 
 
+@pytest.mark.trigger_lights
 def test_api_can_set_device(test_api):
     test_light = test_api.get_device(
         resource_type=ResourceType.LIGHT,
-        id=LIGHT_UUID
+        uuid=LIGHT_UUID
     )
     starting_position: bool = test_light.on.on
 
@@ -90,7 +91,7 @@ def test_api_can_set_device(test_api):
     # toggle the light
     test_api.set_device(
         resource_type=ResourceType.LIGHT,
-        id=LIGHT_UUID,
+        uuid=LIGHT_UUID,
         params={
             'on': {'on': not starting_position}
         }
@@ -101,7 +102,7 @@ def test_api_can_set_device(test_api):
     # refresh resource
     test_light = test_api.get_device(
         resource_type=ResourceType.LIGHT,
-        id=LIGHT_UUID
+        uuid=LIGHT_UUID
     )
 
     assert test_light.on.on != starting_position
@@ -110,7 +111,7 @@ def test_api_can_set_device(test_api):
     # toggle the light back
     test_api.set_device(
         resource_type=ResourceType.LIGHT,
-        id=LIGHT_UUID,
+        uuid=LIGHT_UUID,
         params={
             'on': {'on': starting_position}
         }
@@ -121,7 +122,7 @@ def test_api_can_set_device(test_api):
     # refresh resource
     test_light = test_api.get_device(
         resource_type=ResourceType.LIGHT,
-        id=LIGHT_UUID
+        uuid=LIGHT_UUID
     )
 
     assert test_light.on.on == starting_position

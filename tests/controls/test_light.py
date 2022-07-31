@@ -63,10 +63,11 @@ def test_bridge(test_config, mocker) -> Bridge:
 def test_light(test_bridge):
     return test_bridge.get_device(
         resource_type=ResourceType.LIGHT,
-        id=LIGHT_UUID
+        uuid=LIGHT_UUID
     )
 
 
+@pytest.mark.trigger_lights
 def test_light_can_adjust_brightness(test_light):
     starting_position: bool = test_light.is_on
     starting_brightness: float = test_light.brightness
@@ -127,6 +128,7 @@ def test_light_can_adjust_brightness(test_light):
     assert abs(test_light.brightness - starting_brightness) < 1
 
 
+@pytest.mark.trigger_lights
 def test_light_can_turn_on_and_off(test_light):
     starting_position: bool = test_light.is_on
     starting_brightness: float = test_light.brightness
@@ -152,7 +154,7 @@ def test_light_can_turn_on_and_off(test_light):
 
 
 def test_can_create_light_from_id(test_bridge):
-    light = Light(id=LIGHT_UUID, bridge=test_bridge)
+    light = Light(uuid=LIGHT_UUID, bridge=test_bridge)
     assert light.resource.metadata.name == LIGHT_NAME
 
 

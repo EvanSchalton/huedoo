@@ -7,3 +7,6 @@ class ResourceDynamics(BaseModel):
     speed_valid: Optional[bool] = None
     status: Optional[str] = None
     status_values: Optional[list[str]] = None
+
+    class Config:
+        use_enum_values = False

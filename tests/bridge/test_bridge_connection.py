@@ -76,13 +76,19 @@ def test_bridge_has_api_ref(test_config):
     assert isinstance(bridge.api, HueAPI)
 
 
-def test_bridge_registration_requires_button_push(test_bridge):
+def test_bridge_registration_requires_button_push(config_dir):
     """
     Raises exception if buttion isn't pressed
     """
 
     with pytest.raises(BridgeButtonNotPushed):
-        test_bridge.register(TEST_APP_NAME)
+        config_handler = ConfigHandlerJson(config_dir, "invalid.json")
+        config_handler.write(ip_address=TEST_BRIDGE_IP)
+        bridge = Bridge(config_handler)
+        bridge.register(
+            app_name=TEST_APP_NAME+"_ERROR",
+            app_token=None
+        )
 
 
 def test_bridge_can_register_app(test_bridge, mocker):
@@ -94,6 +100,7 @@ def test_bridge_can_register_app(test_bridge, mocker):
         'huedoo.hue_api.hue_api.HueAPI._get_app_token',
         return_value=MOCK_TOKEN
     )
+    test_bridge.config_handler.data.app_token = None
     test_bridge.register(TEST_APP_NAME)
 
     # print(test_bridge.config_handler.data)
